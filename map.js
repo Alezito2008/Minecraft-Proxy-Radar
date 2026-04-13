@@ -27,6 +27,15 @@ const BLOCK_DETAIL = 4; // Ej: 4 = Chunks con bloques 4*4
 const CHUNK_GRID_SIZE = 48;
 const BLOCK_GRID_SIZE = CHUNK_GRID_SIZE / BLOCK_DETAIL;
 
+function zoomIn() {
+    options.zoom /= 1.2;
+    if (options.zoom < 1) options.zoom = 1
+}
+
+function zoomOut() {
+    options.zoom *= 1.2;
+}
+
 function setup() {
     resize();
     draw();
@@ -70,17 +79,18 @@ function updateUI() {
 
 function draw() {
     updateUI();
-    ctx.setTransform(options.zoom, 0, 0, options.zoom, 0, 0);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    ctx.scale(options.zoom, options.zoom);
     ctx.translate(pos.x, pos.y);
 
-    ctx.lineWidth = 0.5;
+    ctx.lineWidth = 1;
     
-    ctx.strokeStyle = '#ddd';
-    drawGrid(CHUNK_GRID_SIZE);
     ctx.strokeStyle = '#333'
     drawGrid(BLOCK_GRID_SIZE);
+    ctx.strokeStyle = '#555';
+    drawGrid(CHUNK_GRID_SIZE);
 
     ctx.lineWidth = 2;
     ctx.strokeStyle = 'red';
@@ -99,8 +109,6 @@ function draw() {
 
     requestAnimationFrame(draw);
 }
-
-window.addEventListener('DOMContentLoaded', setup);
 
 canvas.addEventListener('mousedown', e => {
     mouse.anchorX = e.offsetX - pos.x;
@@ -123,18 +131,12 @@ canvas.addEventListener('mousemove', e => {
     pos.y = e.offsetY - mouse.anchorY;
 })
 
+canvas.addEventListener('wheel', e => { (e.deltaY > 0) ? zoomIn() : zoomOut(); });
+
+window.addEventListener('DOMContentLoaded', setup);
 window.addEventListener('resize', resize);
-
-document.getElementById('zoom-out').addEventListener('click', () => {
-    options.zoom *= 1.2;
-})
-
-document.getElementById('zoom-in').addEventListener('click', () => {
-    options.zoom /= 1.2;
-    if (options.zoom < 1) {
-        options.zoom = 1
-    }
-})
+document.getElementById('zoom-in').addEventListener('click', zoomIn);
+document.getElementById('zoom-out').addEventListener('click', zoomOut);
 
 const infoCoords = document.getElementById('info-coordinates');
 

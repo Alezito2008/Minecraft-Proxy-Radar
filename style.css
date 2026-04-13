@@ -14,11 +14,11 @@ body {
 }
 
 footer {
-    position: absolute;
-    bottom: 0;
+    margin-top: auto;
     width: 100%;
     display: flex;
     justify-content: space-between;
+    line-height: 1;
 }
 
 a {
@@ -30,6 +30,18 @@ a {
     position: fixed;
     width: 100%;
     height: 100%;
+    cursor: crosshair;
+}
+
+.interface {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    padding: 8px;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    pointer-events: none;
 }
 
 .mc-button {
@@ -40,10 +52,12 @@ a {
     cursor: pointer;
     overflow: hidden;
     white-space: nowrap;
+    -webkit-user-select: none;
     user-select: none;
     background: #999 url('assets/minecraft-button-bg.png') center / cover;
     image-rendering: pixelated;
     border: 2px solid #000;
+    pointer-events: auto;
 }
 
 .mc-button > .title {
