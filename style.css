@@ -24,6 +24,7 @@ footer {
 a {
     color: #FFFFA0;
     text-decoration: none;
+    pointer-events: auto;
 }
 
 #map {

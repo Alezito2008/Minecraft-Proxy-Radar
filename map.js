@@ -111,8 +111,8 @@ function draw() {
 }
 
 canvas.addEventListener('mousedown', e => {
-    mouse.anchorX = e.offsetX - pos.x;
-    mouse.anchorY = e.offsetY - pos.y;
+    mouse.anchorX = e.offsetX / options.zoom - pos.x;
+    mouse.anchorY = e.offsetY / options.zoom - pos.y;
 
     mouse.isDown = true;
 })
@@ -127,8 +127,8 @@ canvas.addEventListener('mousemove', e => {
 
     if (!mouse.isDown) return;
 
-    pos.x = e.offsetX - mouse.anchorX;
-    pos.y = e.offsetY - mouse.anchorY;
+    pos.x = e.offsetX / options.zoom - mouse.anchorX;
+    pos.y = e.offsetY / options.zoom - mouse.anchorY;
 })
 
 canvas.addEventListener('wheel', e => { (e.deltaY > 0) ? zoomIn() : zoomOut(); });
