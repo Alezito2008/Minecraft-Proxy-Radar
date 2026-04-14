@@ -88,9 +88,9 @@ function draw() {
 
     ctx.lineWidth = 1;
     
-    ctx.strokeStyle = '#333'
+    ctx.strokeStyle = '#30303075'
     drawGrid(BLOCK_GRID_SIZE);
-    ctx.strokeStyle = '#555';
+    ctx.strokeStyle = '#46464662';
     drawGrid(CHUNK_GRID_SIZE);
 
     ctx.lineWidth = 2;
