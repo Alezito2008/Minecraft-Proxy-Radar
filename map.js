@@ -75,7 +75,7 @@ function updateUI() {
     const x = ((mouse.coordX / options.zoom - pos.x) / CHUNK_GRID_SIZE * 16);
     const y = ((-mouse.coordY / options.zoom + pos.y) / CHUNK_GRID_SIZE * 16);
     updateInfoCoordinates(Math.round(x), Math.round(y));
-    updateInfoChunkCoordinates(Math.ceil(x/16), Math.ceil(y/16))
+    updateInfoChunkCoordinates(Math.floor(x/16), Math.floor(y/16))
 }
 
 function draw() {
