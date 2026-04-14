@@ -15,6 +15,9 @@ const mouse = {
     isDown: false,
     anchorX: 0,
     anchorY: 0,
+    screenX: 0,
+    screenY: 0,
+    // Minecraft Coords
     coordX: 0,
     coordY: 0,
 }
@@ -24,8 +27,8 @@ const options = {
 }
 
 const BLOCK_DETAIL = 4; // Ej: 4 = Chunks con bloques 4*4
-const CHUNK_GRID_SIZE = 48;
-const BLOCK_GRID_SIZE = CHUNK_GRID_SIZE / BLOCK_DETAIL;
+const CHUNK_GRID_SIZE_PX = 48;
+const BLOCK_GRID_SIZE_PX = CHUNK_GRID_SIZE_PX / BLOCK_DETAIL;
 
 function zoomIn() {
     options.zoom /= 1.2;
@@ -72,8 +75,7 @@ function drawGrid(size) {
 }
 
 function updateUI() {
-    const x = ((mouse.coordX / options.zoom - pos.x) / CHUNK_GRID_SIZE * 16);
-    const y = ((-mouse.coordY / options.zoom + pos.y) / CHUNK_GRID_SIZE * 16);
+    const x = mouse.coordX, y = mouse.coordY;
     updateInfoCoordinates(Math.round(x), Math.round(y));
     updateInfoChunkCoordinates(Math.floor(x/16), Math.floor(y/16))
 }
@@ -89,9 +91,9 @@ function draw() {
     ctx.lineWidth = 1;
     
     ctx.strokeStyle = '#30303075'
-    drawGrid(BLOCK_GRID_SIZE);
+    drawGrid(BLOCK_GRID_SIZE_PX);
     ctx.strokeStyle = '#46464662';
-    drawGrid(CHUNK_GRID_SIZE);
+    drawGrid(CHUNK_GRID_SIZE_PX);
 
     ctx.lineWidth = 2;
     ctx.strokeStyle = 'red';
@@ -123,8 +125,11 @@ window.addEventListener('mouseup', e => {
 })
 
 canvas.addEventListener('mousemove', e => {
-    mouse.coordX = e.offsetX;
-    mouse.coordY = e.offsetY;
+    mouse.screenX = e.offsetX;
+    mouse.screenY = e.offsetY;
+
+    mouse.coordX = (mouse.screenX / options.zoom - pos.x) / CHUNK_GRID_SIZE_PX * 16;
+    mouse.coordY = (-mouse.screenY / options.zoom + pos.y) / CHUNK_GRID_SIZE_PX * 16;
 
     if (!mouse.isDown) return;
 
