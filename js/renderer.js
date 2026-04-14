@@ -5,6 +5,10 @@ import { MAP_CONFIG } from "./main.js";
 export const canvas = document.getElementById('map');
 const ctx = canvas.getContext('2d');
 
+const PLAYER_SIZE = 24;
+const playerImage = new Image();
+playerImage.src = '../assets/icons/player.png';
+
 function setup() {
     resize();
     draw();
@@ -40,6 +44,24 @@ function drawGrid(size) {
     ctx.stroke();
 }
 
+function drawAxes() {
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'lime';
+    ctx.beginPath();
+    ctx.moveTo(0, -camera.pos.y);
+    ctx.lineTo(0, -camera.pos.y + canvas.height);
+    ctx.stroke();
+    ctx.strokeStyle = 'red';
+    ctx.beginPath();
+    ctx.moveTo(-camera.pos.x, 0);
+    ctx.lineTo(-camera.pos.x + canvas.width, 0);
+    ctx.stroke();
+}
+
+function drawPlayer(x, y) {
+    ctx.drawImage(playerImage, x - PLAYER_SIZE / 2, y - PLAYER_SIZE / 2, PLAYER_SIZE, PLAYER_SIZE)
+}
+
 export function draw() {
     updateUI();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -55,22 +77,20 @@ export function draw() {
     ctx.strokeStyle = '#46464662';
     drawGrid(MAP_CONFIG.CHUNK_GRID_SIZE_PX);
 
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = 'red';
-    ctx.beginPath();
-    ctx.moveTo(0, -camera.pos.y);
-    ctx.lineTo(0, -camera.pos.y + canvas.height);
-    ctx.stroke();
-    ctx.strokeStyle = 'blue';
-    ctx.beginPath();
-    ctx.moveTo(-camera.pos.x, 0);
-    ctx.lineTo(-camera.pos.x + canvas.width, 0);
-    ctx.stroke();
-
-    ctx.fillStyle = 'lime';
-    ctx.fillRect(0, 10, 10, 10);
-
+    drawAxes();
+    drawPlayer(0, 0);
     requestAnimationFrame(draw);
+}
+
+function worldToScreen(x, y) {
+    return {
+        x: MAP_CONFIG.CHUNK_GRID_SIZE_PX / 16 * x,
+        y: MAP_CONFIG.CHUNK_GRID_SIZE_PX / 16 * y
+    }
+}
+
+function screenToWorld(x, y) {
+    return { x: 0, y: 0 }
 }
 
 window.addEventListener('DOMContentLoaded', setup);

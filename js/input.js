@@ -36,4 +36,4 @@ canvas.addEventListener('mousemove', e => {
     camera.pos.y = e.offsetY / camera.zoom - mouse.anchorY;
 })
 
-canvas.addEventListener('wheel', e => { (e.deltaY > 0) ? zoomIn() : zoomOut(); });
+canvas.addEventListener('wheel', e => { (e.deltaY > 0) ? camera.zoomIn() : camera.zoomOut(); });

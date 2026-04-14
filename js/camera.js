@@ -8,12 +8,12 @@ export const camera = {
     get pos() { return state.pos },
 
     zoomIn() {
-        options.zoom /= 1.2;
-        if (options.zoom < 1) options.zoom = 1;
+        state.zoom /= 1.2;
+        if (state.zoom < 1) state.zoom = 1;
     },
 
     zoomOut() {
-        options.zoom *= 1.2;
+        state.zoom *= 1.2;
     },
 
     setPos(x, y) {
