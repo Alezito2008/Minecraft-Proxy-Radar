@@ -75,6 +75,7 @@ function updateUI() {
     const x = ((mouse.coordX / options.zoom - pos.x) / CHUNK_GRID_SIZE * 16);
     const y = ((-mouse.coordY / options.zoom + pos.y) / CHUNK_GRID_SIZE * 16);
     updateInfoCoordinates(Math.round(x), Math.round(y));
+    updateInfoChunkCoordinates(Math.ceil(x/16), Math.ceil(y/16))
 }
 
 function draw() {
@@ -139,7 +140,12 @@ document.getElementById('zoom-in').addEventListener('click', zoomIn);
 document.getElementById('zoom-out').addEventListener('click', zoomOut);
 
 const infoCoords = document.getElementById('info-coordinates');
+const infoChunkCoords = document.getElementById('info-chunk-coordinates');
 
 function updateInfoCoordinates(x, y) {
     infoCoords.textContent = `Coordinates: ${x} / ${y}`;
+}
+
+function updateInfoChunkCoordinates(x, y) {
+    infoChunkCoords.textContent = `Chunk: ${x} / ${y}`;
 }
