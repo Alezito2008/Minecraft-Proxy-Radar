@@ -1,4 +1,7 @@
+use tokio::sync::mpsc::{self, Receiver, Sender};
+
 use axum::{Router, extract::{WebSocketUpgrade, ws::{Message, Utf8Bytes, WebSocket}}, response::Response, routing};
+use futures_util::{SinkExt, StreamExt, stream::{SplitSink, SplitStream}};
 
 const PORT: u16 = 3000;
 
@@ -20,8 +23,16 @@ async fn ws_handler(ws: WebSocketUpgrade) -> Response {
     ws.on_upgrade(handle_socket)
 }
 
-async fn handle_socket(mut socket: WebSocket) {
-    while let Some(msg) = socket.recv().await {
+async fn handle_socket(socket: WebSocket) {
+    let (sender, receiver) = socket.split();
+    let (tx, rx) = mpsc::channel::<Message>(100);
+
+    tokio::spawn(read(receiver, tx));
+    tokio::spawn(write(sender, rx));
+}
+
+async fn read(mut receiver: SplitStream<WebSocket>, tx: Sender<Message>) {
+    while let Some(msg) = receiver.next().await {
         if let Ok(Message::Text(msg)) = msg {
             println!("Received message: {msg}");
         } else {
@@ -29,8 +40,16 @@ async fn handle_socket(mut socket: WebSocket) {
             return;
         }
 
-        if socket.send(Message::Text(Utf8Bytes::from("Response from rust"))).await.is_err() {
-            eprintln!("Failed to send message");
-        };
+        if let Err(e) = tx.send(Message::Text(Utf8Bytes::from("Rust response"))).await {
+            eprint!("Error sending response: {e}");
+        }
+    }
+}
+
+async fn write(mut sender: SplitSink<WebSocket, Message>, mut rx: Receiver<Message>) {
+    while let Some(msg) = rx.recv().await {
+        if let Err(e) = sender.send(msg).await {
+            eprintln!("Error sending message: {e}");
+        }
     }
 }
