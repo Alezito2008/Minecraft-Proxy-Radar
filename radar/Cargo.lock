@@ -365,7 +365,7 @@ checksum = "47e1ffaa40ddd1f3ed91f717a33c8c0ee23fff369e3aa8772b9605cc1d22f4c3"
 [[package]]
 name = "mc_proxy"
 version = "0.1.0"
-source = "git+https://github.com/Alezito2008/Minecraft-Proxy.git?branch=main#45dc8df0f238407aefa8152b511669aafe84eba8"
+source = "git+https://github.com/Alezito2008/Minecraft-Proxy.git?branch=main#43991862b5f4703c7105a31be1e24ee66f880a46"
 dependencies = [
  "flate2",
  "tokio",
@@ -693,9 +693,9 @@ dependencies = [
 
 [[package]]
 name = "tokio"
-version = "1.51.1"
+version = "1.52.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f66bf9585cda4b724d3e78ab34b73fb2bbaba9011b9bfdf69dc836382ea13b8c"
+checksum = "a91135f59b1cbf38c91e73cf3386fca9bb77915c45ce2771460c9d92f0f3d776"
 dependencies = [
  "bytes",
  "libc",
