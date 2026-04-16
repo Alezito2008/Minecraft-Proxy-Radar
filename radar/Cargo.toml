@@ -8,5 +8,4 @@ mc_proxy = { git = "https://github.com/Alezito2008/Minecraft-Proxy.git", branch 
 axum = { version = "0.8.9", features = ["ws"] }
 futures-util = "0.3.32"
 tokio = { version = "1.51.1", features = ["full"] }
-tower = "0.5.3"
-tower-http = "0.6.8"
+serde_json = "1.0.149"
